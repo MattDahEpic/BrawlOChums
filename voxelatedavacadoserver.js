@@ -34,7 +34,6 @@ process.on('SIGINT',function () {
 });
 
 wss.on('connection',function connection(ws) {
-   ws.send("{\"c\":\"connect\"}");
    console.log("+Recieved connection from "+ws._socket.remoteAddress);
    ws.hasHandshook = false;
    ws.onmessage = function message(msg) {
