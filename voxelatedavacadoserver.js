@@ -3,6 +3,7 @@ Error Codes:
 4000: type not provided on handshake (didn't identify as game or client)
 4001: client provided a game code that didn't exist
 4002: game ended because room destructed (game client left)
+4003: client attempted to connect without a name or the name provided was invalid
  */
 
 const websock = require('./node_modules/ws');
@@ -25,17 +26,16 @@ const json = new jsonparse();
 const wss = new websock.Server({ port: 36245 });
 
 process.on('SIGINT',function () {
-    console.log("Recieved SIGINT, stopping gracefully...");
+    console.log("Received SIGINT, stopping gracefully...");
     wss.clients.forEach(function (ws) {
         console.log("-Ended connection with "+ws.upgradeReq.socket.remoteAddress+" (1001)");
-        ws.closeReasonCode = 1001;
-        ws.close();
+        ws.close(1001);
     });
     process.exit(1);
 });
 
 wss.on('connection',function connection(ws,conn) {
-   console.log("+Recieved connection from "+ws._socket.remoteAddress);
+   console.log("+Received connection from "+ws._socket.remoteAddress);
    ws.upgradeReq = conn;
    ws.hasHandshook = false;
    ws.onmessage = function message(msg) {
@@ -69,33 +69,31 @@ wss.on('connection',function connection(ws,conn) {
                //ensure code was provided and has a room
                if (typeof message.code === 'undefined' || !connections.has(message.code)) {
                    ws.send("{\"e\":\"Invalid game code.\"}");
-                   ws.closeReasonCode = 4001;
-                   ws.closeDescription = "Invalid game code.";
                    console.log("-Ended connection with "+ws._socket.remoteAddress+ " (4001)");
-                   ws.close();
+                   ws.close(4001);
+                   return;
                }
                if (typeof message.name === 'undefined') {
-                   //TODO error out, no player name provided
+                   ws.send("{\"e\":\"Invalid or nonexistant name.\"}");
+                   console.log("-Ended connection with "+ws._socket.remoteAddress+ " (4003)");
+                   ws.close(4003);
                    return;
                }
                //attach client to game session
                ws.clientType = "client";
                ws.gameCode = message.code;
                ws.playerName = message.name;
-               connections.get(message.code).clients.add(ws);
+               connections.get(message.code).clients.push(ws);
                ws.send("{\"joingame\":\"true\"}");
-               //TODO tell the client it's been added and send an initial update to force the client to show graphics
+               //TODO send an initial update to force the client to show graphics
            } else {
                ws.send("{\"e\":\"Invalid type provided on handshake message.\"}");
-               ws.closeReasonCode = 4000;
-               ws.closeDescription = "Invalid type provided on handshake message.";
                console.log("-Ended connection with "+ws._socket.remoteAddress+" (4000)");
-               ws.close();
+               ws.close(4000);
            }
        }
    };
    ws.onclose = function close() {
-       console.log("-Ended connection with "+ws.upgradeReq.socket.remoteAddress+" (Client Closed)");
        if (ws.clientType == "game") {
            return;
             //TODO kill room with ws.gameCode, and all clients attached to it
