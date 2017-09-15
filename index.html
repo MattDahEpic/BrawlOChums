@@ -1,19 +1,43 @@
 <html>
     <head>
         <title>Brawl o' Chums</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha384-8C+3bW/ArbXinsJduAjm9O7WNnuOcO+Bok/VScRYikawtvz4ZPrpXtGfKIewM9dK" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="_resources/css/main.css">
         <script src="_resources/js/main.min.js"></script>
     </head>
     <body>
-        <div id="codeEntry">
+        <div id="base-codeEntry" class="panel panel-default centered-panel">
             <h1>Brawl o' Chums</h1>
             <form>
-                <p>Game Code:</p>
+                <p>Game Code</p>
                 <input type="text" style="text-transform: uppercase" id="base-gameCode" size="4" maxlength="4">
-                <p>Player Name:</p>
+                <p>Player Name</p>
                 <input type="text" id="base-playerName" size="20" maxlength="20">
                 <br>
                 <input type="button" id="base-submit" onclick="DoJoinGame();" value="Join Game">
             </form>
+        </div>
+        <div id="error-connection" class="overlay" style="display: none;">
+            <div class="overlay-black"></div>
+            <div class="panel panel-default centered-panel-thin">
+                <h1>Disconnected!</h1>
+                <p>You have been disconnected.</p>
+                <button onclick="javascript:location.reload();">Reload Page</button>
+                <p></p>
+            </div>
+        </div>
+        <div id="error-nogamecode" class="overlay" style="display: none;">
+            <div class="overlay-black"></div>
+            <div class="panel panel-default centered-panel-thin">
+                <h1>Invalid Game Code!</h1>
+                <p>You have entered a code for a game that doesn't exist or you didn't enter one at all.</p>
+                <button onclick="javascript:location.reload();">Reload Page</button>
+                <p></p>
+            </div>
         </div>
     </body>
 </html>
