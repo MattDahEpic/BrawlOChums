@@ -27,8 +27,10 @@ function DoJoinGame () {
     ws.onmessage = function (msg) {
         console.log(msg.data); //TODO remove
         let message = JSON.parse(msg.data);
-        if (message.joingame) { //if this is a "client added to session" message, set display: none; on the codeEntry div
+        if (message.joingame) { //if this is a "client added to session" message, switch to the logo screen until a update command received
             document.getElementById('base-codeEntry').style.display = "none";
+            document.getElementById('other-lobby').style.display = "initial";
+            return;
         }
         //TODO handle message
     };
