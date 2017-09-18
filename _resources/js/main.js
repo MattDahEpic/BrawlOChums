@@ -15,6 +15,7 @@ window.onhashchange = function () {
 
 var gameCode;
 var playerName;
+var identifier;
 
 function DoJoinGame () {
     gameCode = document.getElementById('base-gameCode').value.toUpperCase();
@@ -30,12 +31,16 @@ function DoJoinGame () {
     var ws = new WebSocket("ws://localhost:36245");
     ws.onopen = function (event) {
         console.log("Connection Established!");
-        ws.send("{\"type\":\"client\",\"code\":\""+gameCode+"\",\"name\":\""+playerName+"\"}");
+        //send type, code, name, and identifier (if we have one) to the server
+        ws.send("{\"type\":\"client\",\"code\":\""+gameCode+"\",\"name\":\""+playerName+"\""+(getCookie('boc-identifier') !== null ? ",\"identifier\":\""+getCookie('boc-indentifier')+"\"" : "")+"}");
     };
     ws.onmessage = function (msg) {
         console.log(msg.data); //TODO remove
         let message = JSON.parse(msg.data);
         if (message.joingame) { //if this is a "client added to session" message, switch to the logo screen until a update command received
+            var now = new Date();
+            identifier = message.identifier;
+            document.cookie = "boc-identifier="+message.identifier+"; expires="+now.setTime(now.getTime()+1800*1000).toUTCString()+"; path=/"; //store the identifier the server gave us for 30 mins
             document.getElementById('base-codeEntry').style.display = "none";
             document.getElementById('other-lobby').style.display = "initial";
             return;
