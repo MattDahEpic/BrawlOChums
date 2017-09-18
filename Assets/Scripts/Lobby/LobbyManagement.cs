@@ -12,10 +12,12 @@ public class LobbyManagement : MonoBehaviour {
     public GameObject lobbyScreen;
     public Text gameCode;
     public RawImage qrCode;
+    public Text playerNames;
 
 	void /*IEnumerator*/ Start () {
 	    connectScreen.SetActive(true);
 	    lobbyScreen.SetActive(false);
+        playerNames.text = "";
         //ensure internet is reachable
         /* TODO WWW connectivityTest = new WWW("https://google.com");
 	    yield return connectivityTest;
@@ -34,7 +36,16 @@ public class LobbyManagement : MonoBehaviour {
                 Debug.Log("Got code!: "+GameManager.gameCode);
                 return;
             }
-            //TODO handle player join messages
+            try {
+                //player join message
+                Message_PlayerJoin join = JsonConvert.DeserializeObject<Message_PlayerJoin>(e.Data);
+                if (join != null) {
+                    //TODO add player to a map to keep track of score
+                    playerNames.text = join.join+"\n"+playerNames.text;
+                }
+            } catch (System.Exception ex) {
+                throw ex;
+            }
         };
 	    GameManager.ws.Connect();
     }
@@ -49,6 +60,10 @@ public class LobbyManagement : MonoBehaviour {
 	    gameCode.text = GameManager.gameCode;
 	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
 	}
+
+    private void OnApplicationQuit() { //TODO ensure that at any point the game crashes the clients are disconnected
+        GameManager.ws.Close();
+    }
 
     private void SetConnectionFail () {
         connectScreenMessage.text = "Failed to connect. Check your internet connection and try again!";
