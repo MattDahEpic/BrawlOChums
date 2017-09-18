@@ -85,6 +85,7 @@ wss.on('connection',function connection(ws,conn) {
                ws.playerName = message.name;
                connections.get(message.code).clients.push(ws);
                ws.send("{\"joingame\":\"true\"}");
+               connections.get(message.code).server.send("{\"join\":\""+message.name+"\"}");
                //TODO send an initial update to force the client to show graphics
            } else {
                ws.send("{\"e\":\"Invalid type provided on handshake message.\"}");
@@ -94,14 +95,15 @@ wss.on('connection',function connection(ws,conn) {
        }
    };
    ws.onclose = function close() {
-       if (ws.clientType == "game") {
-           return;
-            //TODO kill room with ws.gameCode, and all clients attached to it
+       if (ws.clientType === "game") { //kill room with ws.gameCode, and all clients attached to it
+           connections.get(ws.gameCode).clients.forEach(function (client) {
+                client.close(4002);
+           });
+           connections.delete(ws.gameCode);
        } else { //client
            return;
             //TODO mark as gone OR fully disconnect, depending on how we want to do things
        }
-       //TODO if server, kill any rooms attached to it
        //TODO if client mark it as gone
    }
 });
