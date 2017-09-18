@@ -18,7 +18,15 @@ var playerName;
 
 function DoJoinGame () {
     gameCode = document.getElementById('base-gameCode').value.toUpperCase();
+    if (gameCode === "") {
+        document.getElementById('error-nogamecode').style.display = "initial";
+        return;
+    }
     playerName = document.getElementById('base-playerName').value;
+    if (playerName === "") {
+        //TODO handle invalid or empty player name
+        return;
+    }
     var ws = new WebSocket("ws://localhost:36245");
     ws.onopen = function (event) {
         console.log("Connection Established!");
@@ -41,6 +49,7 @@ function DoJoinGame () {
                 document.getElementById('error-nogamecode').style.display = "initial";
                 break;
             case 1006:
+            case 4002:
             default:
                 document.getElementById('error-connection').style.display = "initial";
                 break;
