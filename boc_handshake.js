@@ -40,7 +40,7 @@ module.exports = function (message, ws) {
         ws.playerName = message.name;
         if (typeof message.identifier === 'undefined') { //new connection
             generateClientIdentifier(ws);
-        } else { //TODO possible returning client!
+        } else { //possible returning client!
             ws.clientIdentifier = message.identifier;
             if (s.connections.get(ws.gameCode).clients.get(ws.clientIdentifier) === null) { //if we actually have a returning client, reattach this socket to the session
                 s.connections.get(ws.gameCode).clients.set(ws.clientIdentifier,ws);
@@ -48,7 +48,7 @@ module.exports = function (message, ws) {
                 generateClientIdentifier(ws);
             }
         }
-        ws.send("{\"joingame\":\"true\"}");
+        ws.send("{\"joingame\":\"true\",\"identifier\":\""+ws.clientIdentifier+"\"}");
     } else {
         ws.send("{\"e\":\"Invalid type provided on handshake message.\"}");
         console.log("-Ended connection with "+ws.upgradeReq.socket.remoteAddress+" (4000)");
