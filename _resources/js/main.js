@@ -17,7 +17,8 @@ var gameCode;
 var playerName;
 var identifier;
 
-function DoJoinGame () {
+function DoJoinGame () { //TODO set button unclickable, maybe spinny animation to show work
+    document.getElementById('base-submit').isDisabled = true;
     gameCode = document.getElementById('base-gameCode').value.toUpperCase();
     if (gameCode === "") {
         document.getElementById('error-nogamecode').style.display = "initial";
@@ -39,8 +40,9 @@ function DoJoinGame () {
         let message = JSON.parse(msg.data);
         if (message.joingame) { //if this is a "client added to session" message, switch to the logo screen until a update command received
             var now = new Date();
+            now.setTime(now.getTime()+1800*1000)
             identifier = message.identifier;
-            document.cookie = "boc-identifier="+message.identifier+"; expires="+now.setTime(now.getTime()+1800*1000).toUTCString()+"; path=/"; //store the identifier the server gave us for 30 mins
+            document.cookie = "boc-identifier="+message.identifier+"; expires="+now.toUTCString()+"; path=/"; //store the identifier the server gave us for 30 mins
             document.getElementById('base-codeEntry').style.display = "none";
             document.getElementById('other-lobby').style.display = "initial";
             return;
