@@ -64,5 +64,5 @@ function generateClientIdentifier (ws) {
         });
     } while (s.connections.get(ws.gameCode).clients.has(ws.clientIdentifier));
     s.connections.get(ws.gameCode).clients.set(ws.clientIdentifier,ws);
-    s.connections.get(message.code).server.send("{\"identifier\":\""+ws.clientIdentifier+"\",\"name\":\""+ws.playerName+"\"}"); //notify game of new client
+    s.connections.get(ws.gameCode).server.send("{\"identifier\":\""+ws.clientIdentifier+"\",\"name\":\""+ws.playerName+"\"}"); //notify game of new client
 }

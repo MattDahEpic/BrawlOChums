@@ -48,6 +48,7 @@ wss.on('connection',function connection(ws,conn) {
            });
            struct.connections.delete(ws.gameCode);
        } else { //mark client as gone, but leave the code in the list so if it returns it can take the same spot
+           if (typeof ws.gameCode === 'undefined') return; //is disconnecting prior to entering room (invalid code?)
            struct.connections.get(ws.gameCode).clients.set(ws.clientIdentifier,null);
        }
    }
