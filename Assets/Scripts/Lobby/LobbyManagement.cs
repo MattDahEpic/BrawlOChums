@@ -18,6 +18,7 @@ public class LobbyManagement : MonoBehaviour {
 	    connectScreen.SetActive(true);
 	    lobbyScreen.SetActive(false);
         playerNames.text = "";
+        GameManager.players = new Dictionary<string, GameManager.PlayerStats>();
         //ensure internet is reachable
         /* TODO WWW connectivityTest = new WWW("https://google.com");
 	    yield return connectivityTest;
@@ -40,13 +41,17 @@ public class LobbyManagement : MonoBehaviour {
                 //player join message
                 Message_PlayerJoin join = JsonConvert.DeserializeObject<Message_PlayerJoin>(e.Data);
                 if (join != null) {
-                    //TODO add player to a map to keep track of score
-                    playerNames.text = join.join+"\n"+playerNames.text;
+                    GameManager.players.Add(join.identifier,new GameManager.PlayerStats(join.name));
+                    playerNames.text = join.name+"\n"+playerNames.text;
                 }
             } catch (System.Exception ex) {
                 throw ex;
             }
         };
+	    GameManager.ws.OnClose += (sender, e) => {
+	        //TODO show disconnected screen
+            Debug.Log("Disconnected!");
+	    };
 	    GameManager.ws.Connect();
     }
 	
