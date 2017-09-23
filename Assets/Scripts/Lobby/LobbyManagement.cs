@@ -13,6 +13,7 @@ public class LobbyManagement : MonoBehaviour {
     public Text gameCode;
     public RawImage qrCode;
     public Text playerNames;
+    public string playerNamesText = "";
 
 	void /*IEnumerator*/ Start () {
 	    connectScreen.SetActive(true);
@@ -42,7 +43,7 @@ public class LobbyManagement : MonoBehaviour {
                 Message_PlayerJoin join = JsonConvert.DeserializeObject<Message_PlayerJoin>(e.Data);
                 if (join != null) {
                     GameManager.players.Add(join.identifier,new GameManager.PlayerStats(join.name));
-                    playerNames.text = join.name+"\n"+playerNames.text;
+                    playerNamesText = join.name+"\n"+playerNamesText;
                 }
             } catch (System.Exception ex) {
                 throw ex;
@@ -64,6 +65,7 @@ public class LobbyManagement : MonoBehaviour {
         lobbyScreen.SetActive(true);
 	    gameCode.text = GameManager.gameCode;
 	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
+	    playerNames.text = playerNamesText;
 	}
 
     private void OnApplicationQuit() { //TODO ensure that at any point the game crashes the clients are disconnected
