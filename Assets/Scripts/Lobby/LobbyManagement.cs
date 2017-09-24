@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QRCoder;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using WebSocketSharp;
 using UnityEngine.UI;
 
@@ -13,7 +14,11 @@ public class LobbyManagement : MonoBehaviour {
     public Text gameCode;
     public RawImage qrCode;
     public Text playerNames;
-    public string playerNamesText = "";
+    [HideInInspector] public string playerNamesText = "";
+    public Button startGameButton;
+    public Slider loadProgress;
+
+    private AsyncOperation gameLoad;
 
 	void /*IEnumerator*/ Start () {
 	    connectScreen.SetActive(true);
@@ -50,11 +55,18 @@ public class LobbyManagement : MonoBehaviour {
             }
         };
 	    GameManager.ws.OnClose += (sender, e) => {
-	        //TODO show disconnected screen
             Debug.Log("Disconnected!");
+	        if (GameManager.gameCode == null) {
+	            SetConnectionFail();
+	        } else {
+	            DisconnectCanvas.show = true;
+            }
 	    };
 	    GameManager.ws.Connect();
-    }
+        //load first scene async
+	    gameLoad = SceneManager.LoadSceneAsync("game");
+	    gameLoad.allowSceneActivation = false;
+	}
 	
 	void Update () {
 	    if (GameManager.gameCode == null) { //show loading screen until we have a room code
@@ -66,6 +78,14 @@ public class LobbyManagement : MonoBehaviour {
 	    gameCode.text = GameManager.gameCode;
 	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
 	    playerNames.text = playerNamesText;
+	    loadProgress.value = gameLoad.progress;
+	    if (gameLoad.progress <= 0.9f) {
+	        startGameButton.enabled = false;
+	        loadProgress.gameObject.SetActive(true);
+	    } else {
+	        startGameButton.enabled = true;
+            loadProgress.gameObject.SetActive(false);
+	    }
 	}
 
     private void OnApplicationQuit() { //TODO ensure that at any point the game crashes the clients are disconnected
@@ -74,5 +94,10 @@ public class LobbyManagement : MonoBehaviour {
 
     private void SetConnectionFail () {
         connectScreenMessage.text = "Failed to connect. Check your internet connection and try again!";
+    }
+
+    public void StartGame () {
+        gameLoad.allowSceneActivation = true;
+        //TODO change websocket event handlers
     }
 }
