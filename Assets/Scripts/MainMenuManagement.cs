@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuManagement : MonoBehaviour {
+    public Text versionNumber;
+    private void Update() {
+        versionNumber.text = "  " + StaticBuildData.gameBuild;
+    }
+
     public void DoPlay() {
         SceneManager.LoadScene("game_lobby");
     }
