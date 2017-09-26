@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Archive Windows') {
       steps {
-        archiveArtifacts 'Build\\Windows*'
+        archiveArtifacts 'Build\\BOC-Windows*'
       }
     }
   }

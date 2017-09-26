@@ -8,7 +8,7 @@ public class BOCBuild {
 		System.Console.WriteLine("Beginning Windows Build");
         string path = System.Environment.GetEnvironmentVariable("WORKSPACE");
         if (path == null) EditorApplication.Exit(1);
-        BuildPipeline.BuildPlayer(EditorBuildSettings.scenes, path + @"\Build\Windows.exe", BuildTarget.StandaloneWindows64, BuildOptions.None);
+        BuildPipeline.BuildPlayer(EditorBuildSettings.scenes, path + @"\Build\BOC-Windows.exe", BuildTarget.StandaloneWindows64, BuildOptions.None);
 		EditorApplication.Exit(0);
     }
 }
