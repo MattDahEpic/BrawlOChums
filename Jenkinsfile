@@ -3,17 +3,17 @@ pipeline {
   stages {
     stage('Build Windows') {
       steps {
-        bat 'Unity.exe -batchmode -executeMethod BOCBuild.BuildWindows -projectPath "%WORKSPACE%" -logfile'
+        bat 'Unity.exe -quit -batchmode -nographics -executeMethod BOCBuild.BuildWindows -projectPath "%WORKSPACE%" -logfile 2>&1'
       }
     }
     stage('Build Mac') {
       steps {
-        bat 'Unity.exe -batchmode -executeMethod BOCBuild.BuildMac -projectPath "%WORKSPACE%" -logfile'
+        bat 'Unity.exe -quit -batchmode -nographics -executeMethod BOCBuild.BuildMac -projectPath "%WORKSPACE%" -logfile 2>&1'
       }
     }
     stage('Build Linux') {
       steps {
-        bat 'Unity.exe -batchmode -executeMethod BOCBuild.BuildLinux -projectPath "%WORKSPACE%" -logfile'
+        bat 'Unity.exe -quit -batchmode -nographics -executeMethod BOCBuild.BuildLinux -projectPath "%WORKSPACE%" -logfile 2>&1'
       }
     }
     stage('Archive Files') {
