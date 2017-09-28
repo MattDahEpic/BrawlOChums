@@ -4,7 +4,7 @@ using UnityEngine;
 using WebSocketSharp;
 
 public static class GameManager {
-    public static WebSocket ws;
+    public static GameStateHelper.GameState state = GameStateHelper.GameState.LOBBY; //TODO tell the websocketmanager the state changed so it can update handlers
     public static string gameCode = null;
     public static Dictionary<string, PlayerStats> players;
 

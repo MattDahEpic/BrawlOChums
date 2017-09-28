@@ -29,40 +29,17 @@ public class LobbyManagement : MonoBehaviour {
         /* TODO WWW connectivityTest = new WWW("https://google.com");
 	    yield return connectivityTest;
 	    if (connectivityTest.error != null) SetConnectionFail();*/
-        //start connection
-        GameManager.ws = new WebSocket("ws://localhost:36245");
-        Debug.Log("Opening connection...");
-
-        GameManager.ws.OnOpen += (sender, e) => {
-            GameManager.ws.Send("{\"type\":\"game\"}");
-        };
-        GameManager.ws.OnMessage += (sender, e) => {
-            if (GameManager.gameCode == null) { //has no room code
-                Message_RecieveRoomCode code = JsonConvert.DeserializeObject<Message_RecieveRoomCode>(e.Data);
-                GameManager.gameCode = code.code;
-                Debug.Log("Got code!: "+GameManager.gameCode);
-                return;
-            }
-            try {
-                //player join message
-                Message_PlayerJoin join = JsonConvert.DeserializeObject<Message_PlayerJoin>(e.Data);
-                if (join != null) {
-                    GameManager.players.Add(join.identifier,new GameManager.PlayerStats(join.name));
-                    playerNamesText = join.name+"\n"+playerNamesText;
-                }
-            } catch (System.Exception ex) {
-                throw ex;
-            }
-        };
 	    GameManager.ws.OnClose += (sender, e) => {
-            Debug.Log("Disconnected!");
+	        Debug.Log("Disconnected!");
 	        if (GameManager.gameCode == null) {
 	            SetConnectionFail();
-	        } else {
+	        }
+	        else {
 	            DisconnectCanvas.show = true;
-            }
+	        }
 	    };
-	    GameManager.ws.Connect();
+        //connect websocket
+        WebSocketManager.Startup();
         //load first scene async
 	    gameLoad = SceneManager.LoadSceneAsync("game");
 	    gameLoad.allowSceneActivation = false;
@@ -77,7 +54,7 @@ public class LobbyManagement : MonoBehaviour {
         lobbyScreen.SetActive(true);
 	    gameCode.text = GameManager.gameCode;
 	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
-	    playerNames.text = playerNamesText;
+	    playerNames.text = playerNamesText; //TODO iterate through connected players and show their names
 	    loadProgress.value = gameLoad.progress;
 	    if (gameLoad.progress <= 0.9f) {
 	        startGameButton.enabled = false;
