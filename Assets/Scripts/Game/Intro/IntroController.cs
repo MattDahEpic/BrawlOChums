@@ -1,20 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class IntroController : IGameStateManager {
+    public VideoPlayer player;
 
-    internal override void SetupHandlers () {
-        
-    }
+    internal override void SetupHandlers () {} //no special handlers for intro state
 
-    // Use this for initialization
 	void Start () {
-		
+	    sceneLoad = SceneManager.LoadSceneAsync("3trivia");
+	    sceneLoad.allowSceneActivation = false;
+        //player is set you play on awake
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		
+	    if ((ulong)player.frame == player.frameCount) {
+	        sceneLoad.allowSceneActivation = true;
+	    }
+        //TODO place player names on screen at correct time
 	}
 }

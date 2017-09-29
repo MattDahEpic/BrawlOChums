@@ -17,8 +17,6 @@ public class LobbyManagement : IGameStateManager {
     public Button startGameButton;
     public Slider loadProgress;
 
-    private AsyncOperation gameLoad;
-
     internal override void SetupHandlers () {
         onClose = (sender, e) => {
             Debug.Log("Disconnected!");
@@ -39,8 +37,8 @@ public class LobbyManagement : IGameStateManager {
         //connect websocket
         WebSocketManager.Startup();
         //load first scene async
-	    gameLoad = SceneManager.LoadSceneAsync("2intro");
-	    gameLoad.allowSceneActivation = false;
+	    sceneLoad = SceneManager.LoadSceneAsync("2intro");
+	    sceneLoad.allowSceneActivation = false;
 	}
 	
 	void Update () {
@@ -56,8 +54,8 @@ public class LobbyManagement : IGameStateManager {
 	    foreach (GameManager.PlayerStats p in GameManager.players.Values) { //populate player name list
 	        playerNames.text += p.name + "\n";
 	    }
-	    loadProgress.value = gameLoad.progress;
-	    if (gameLoad.progress <= 0.9f) {
+	    loadProgress.value = sceneLoad.progress;
+	    if (sceneLoad.progress < 0.9f) {
 	        startGameButton.enabled = false;
 	        loadProgress.gameObject.SetActive(true);
 	    } else {
@@ -71,7 +69,6 @@ public class LobbyManagement : IGameStateManager {
     }
 
     public void StartGame () {
-        gameLoad.allowSceneActivation = true;
-        //TODO change websocket event handlers
+        sceneLoad.allowSceneActivation = true;
     }
 }

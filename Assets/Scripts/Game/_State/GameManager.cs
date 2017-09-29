@@ -5,7 +5,6 @@ using WebSocketSharp;
 
 public static class GameManager {
     public static GameStateHelper.GameState state = GameStateHelper.GameState.LOBBY;
-
     public static string gameCode = null;
     public static Dictionary<string, PlayerStats> players;
 

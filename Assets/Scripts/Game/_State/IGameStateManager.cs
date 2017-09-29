@@ -7,6 +7,8 @@ public abstract class IGameStateManager : MonoBehaviour {
     internal System.EventHandler<MessageEventArgs> onMessage;
     internal System.EventHandler<CloseEventArgs> onClose;
 
+    internal AsyncOperation sceneLoad;
+
     private void OnEnable () {
         if (onMessage == null || onClose == null) SetupHandlers();
         if (onMessage != null) WebSocketManager.ws.OnMessage += onMessage;
