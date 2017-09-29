@@ -9,8 +9,8 @@ public abstract class IGameStateManager : MonoBehaviour {
 
     private void OnEnable () {
         if (onMessage == null || onClose == null) SetupHandlers();
-        WebSocketManager.ws.OnMessage += onMessage;
-        WebSocketManager.ws.OnClose += onClose;
+        if (onMessage != null) WebSocketManager.ws.OnMessage += onMessage;
+        if (onClose != null) WebSocketManager.ws.OnClose += onClose;
     }
 
     internal abstract void SetupHandlers (); //used for registering handlers
@@ -20,7 +20,7 @@ public abstract class IGameStateManager : MonoBehaviour {
         WebSocketManager.ws.OnClose -= onClose;
     }
 
-    private void OnApplicationClose () {
+    private void OnApplicationQuit () {
         WebSocketManager.Shutdown();
     }
 }

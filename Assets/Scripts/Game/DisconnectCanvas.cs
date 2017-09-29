@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DisconnectCanvas : MonoBehaviour {
     public static bool show = false;
@@ -12,7 +13,7 @@ public class DisconnectCanvas : MonoBehaviour {
     public void ClickButton () {
         try {
             WebSocketManager.Shutdown();
-            GameManager.gameCode = null;
+            SceneManager.LoadScene("0menu");
         } catch {}
     }
 }

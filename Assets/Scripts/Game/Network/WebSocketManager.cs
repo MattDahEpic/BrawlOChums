@@ -40,6 +40,10 @@ public static class WebSocketManager {
     public static void Startup () {
         if (notInitialized) {
             //TODO connectivity test
+            //ensure internet is reachable
+            /* TODO WWW connectivityTest = new WWW("https://google.com");
+            yield return connectivityTest;
+            if (connectivityTest.error != null) SetConnectionFail();*/
             UnityEngine.Debug.Log("Opening connection...");
             _ws = new WebSocket("ws://localhost:36245");
             _ws.OnOpen += (sender, e) => {
@@ -57,6 +61,7 @@ public static class WebSocketManager {
             //close connection
             _ws.Close();
             _ws = null;
+            GameManager.gameCode = null;
         }
     }
 }

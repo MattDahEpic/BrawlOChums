@@ -36,14 +36,10 @@ public class LobbyManagement : IGameStateManager {
 	    lobbyScreen.SetActive(false);
         playerNames.text = "";
         GameManager.players = new Dictionary<string, GameManager.PlayerStats>();
-        //ensure internet is reachable
-        /* TODO WWW connectivityTest = new WWW("https://google.com");
-	    yield return connectivityTest;
-	    if (connectivityTest.error != null) SetConnectionFail();*/
         //connect websocket
         WebSocketManager.Startup();
         //load first scene async
-	    gameLoad = SceneManager.LoadSceneAsync("game");
+	    gameLoad = SceneManager.LoadSceneAsync("2intro");
 	    gameLoad.allowSceneActivation = false;
 	}
 	
@@ -56,6 +52,7 @@ public class LobbyManagement : IGameStateManager {
         lobbyScreen.SetActive(true);
 	    gameCode.text = GameManager.gameCode;
 	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
+	    playerNames.text = "";
 	    foreach (GameManager.PlayerStats p in GameManager.players.Values) { //populate player name list
 	        playerNames.text += p.name + "\n";
 	    }
