@@ -7,20 +7,31 @@ using UnityEngine.SceneManagement;
 using WebSocketSharp;
 using UnityEngine.UI;
 
-public class LobbyManagement : MonoBehaviour {
+public class LobbyManagement : IGameStateManager {
     public GameObject connectScreen;
     public Text connectScreenMessage;
     public GameObject lobbyScreen;
     public Text gameCode;
     public RawImage qrCode;
     public Text playerNames;
-    [HideInInspector] public string playerNamesText = "";
     public Button startGameButton;
     public Slider loadProgress;
 
     private AsyncOperation gameLoad;
 
-	void /*IEnumerator*/ Start () {
+    internal override void SetupHandlers () {
+        onClose = (sender, e) => {
+            Debug.Log("Disconnected!");
+            if (GameManager.gameCode == null) {
+                SetConnectionFail();
+            } else {
+                DisconnectCanvas.show = true;
+            }
+        };
+    }
+
+
+    void /*IEnumerator*/ Start () {
 	    connectScreen.SetActive(true);
 	    lobbyScreen.SetActive(false);
         playerNames.text = "";
@@ -29,15 +40,6 @@ public class LobbyManagement : MonoBehaviour {
         /* TODO WWW connectivityTest = new WWW("https://google.com");
 	    yield return connectivityTest;
 	    if (connectivityTest.error != null) SetConnectionFail();*/
-	    GameManager.ws.OnClose += (sender, e) => {
-	        Debug.Log("Disconnected!");
-	        if (GameManager.gameCode == null) {
-	            SetConnectionFail();
-	        }
-	        else {
-	            DisconnectCanvas.show = true;
-	        }
-	    };
         //connect websocket
         WebSocketManager.Startup();
         //load first scene async
@@ -54,7 +56,9 @@ public class LobbyManagement : MonoBehaviour {
         lobbyScreen.SetActive(true);
 	    gameCode.text = GameManager.gameCode;
 	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
-	    playerNames.text = playerNamesText; //TODO iterate through connected players and show their names
+	    foreach (GameManager.PlayerStats p in GameManager.players.Values) { //populate player name list
+	        playerNames.text += p.name + "\n";
+	    }
 	    loadProgress.value = gameLoad.progress;
 	    if (gameLoad.progress <= 0.9f) {
 	        startGameButton.enabled = false;
@@ -64,10 +68,6 @@ public class LobbyManagement : MonoBehaviour {
             loadProgress.gameObject.SetActive(false);
 	    }
 	}
-
-    private void OnApplicationQuit() { //TODO ensure that at any point the game crashes the clients are disconnected
-        GameManager.ws.Close();
-    }
 
     private void SetConnectionFail () {
         connectScreenMessage.text = "Failed to connect. Check your internet connection and try again!";

@@ -11,7 +11,7 @@ public class DisconnectCanvas : MonoBehaviour {
 
     public void ClickButton () {
         try {
-            GameManager.ws.Close();
+            WebSocketManager.Shutdown();
             GameManager.gameCode = null;
         } catch {}
     }

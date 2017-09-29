@@ -55,10 +55,8 @@ public static class WebSocketManager {
     public static void Shutdown () {
         if (!notInitialized) {
             //close connection
+            _ws.Close();
+            _ws = null;
         }
-    }
-
-    public static void UpdateEventHandlers (GameStateHelper.GameState state) {
-        
     }
 }
