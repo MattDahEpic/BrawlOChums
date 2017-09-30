@@ -18,8 +18,8 @@ public abstract class IGameStateManager : MonoBehaviour {
     internal abstract void SetupHandlers (); //used for registering handlers
 
     private void OnDisable () {
-        WebSocketManager.ws.OnMessage -= onMessage;
-        WebSocketManager.ws.OnClose -= onClose;
+        if (onMessage != null) WebSocketManager.ws.OnMessage -= onMessage;
+        if (onClose != null) WebSocketManager.ws.OnClose -= onClose;
     }
 
     private void OnApplicationQuit () {

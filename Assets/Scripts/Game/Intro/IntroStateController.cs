@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
-public class IntroController : IGameStateManager {
+public class IntroStateController : IGameStateManager {
     public VideoPlayer player;
 
     internal override void SetupHandlers () {} //no special handlers for intro state
@@ -20,5 +20,7 @@ public class IntroController : IGameStateManager {
 	        sceneLoad.allowSceneActivation = true;
 	    }
         //TODO place player names on screen at correct time
+        //TODO show max score
+        //TODO progress bar of trivia loading, don't allow player to skip or scene to advance until the trivia is loaded
 	}
 }

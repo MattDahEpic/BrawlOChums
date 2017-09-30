@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using WebSocketSharp;
 using UnityEngine.UI;
 
-public class LobbyManagement : IGameStateManager {
+public class LobbyStateController : IGameStateManager {
     public GameObject connectScreen;
     public Text connectScreenMessage;
     public GameObject lobbyScreen;
@@ -34,6 +34,7 @@ public class LobbyManagement : IGameStateManager {
 	    lobbyScreen.SetActive(false);
         playerNames.text = "";
         GameManager.players = new Dictionary<string, GameManager.PlayerStats>();
+        GameManager.trivia = new List<TriviaJSONParser.TriviaQuestion>();
         //connect websocket
         WebSocketManager.Startup();
         //load first scene async
@@ -62,6 +63,7 @@ public class LobbyManagement : IGameStateManager {
 	        startGameButton.enabled = true;
             loadProgress.gameObject.SetActive(false);
 	    }
+	    //TODO show trivia category options, prepare those for loading at game start
 	}
 
     private void SetConnectionFail () {
@@ -70,5 +72,6 @@ public class LobbyManagement : IGameStateManager {
 
     public void StartGame () {
         sceneLoad.allowSceneActivation = true;
+        //TODO start trivia parsing
     }
 }

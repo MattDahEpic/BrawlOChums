@@ -1,0 +1,20 @@
+[{
+	"question": "What artificial flavoring comes from a beaver's butt?",
+	"answers": [
+		"Chocolate",
+		"Vanilla",
+		"Root Beer",
+		"Tuna"
+	],
+	"correct_answer": "Vanilla",
+	"author": "Brendo"
+},
+{
+	"question": "Celebrity chef Gordon Ramsay opened his first restaurant in what city?",
+	"answers": [
+		"London, England",
+		"Sydney, Australia",
+		""
+	],
+	"currect_answer": "London, England"
+}]
