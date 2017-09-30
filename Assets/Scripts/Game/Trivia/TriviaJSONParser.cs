@@ -6,8 +6,9 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 public static class TriviaJSONParser {
-    //TODO public static float fileProgress;
-    //TODO public static float loadProgress;
+    public static float loadProgress; //TODO if possible file progress (streaming makes it seem iffy)
+
+    public static bool finishedLoading;
 
     public struct TriviaQuestion {
         [JsonRequired] public string question;
@@ -26,14 +27,14 @@ public static class TriviaJSONParser {
         [JsonRequired] public string file;
     }
 
-    public static void LoadFile (string file) {
+    private static void LoadFile (string file) {
         JsonSerializer serializer = new JsonSerializer();
         using (JsonReader reader = new JsonTextReader(File.OpenText(file))) { //https://stackoverflow.com/questions/43747477/how-to-parse-huge-json-file-as-stream-in-json-net
             while (reader.Read()) {
                 if (reader.TokenType == JsonToken.StartObject) {
                     try {
                         TriviaQuestion q = serializer.Deserialize<TriviaQuestion>(reader);
-                        //TODO make sure that all question part exist
+                        //TODO make sure that all question parts exist
                         if (!q.answers.Contains(q.correct_answer)) {
                             Debug.LogError("Error parsing trivia question "+q.question+" in "+file+"! Answers list did not contain specified correct answer!");
                             continue;
@@ -49,14 +50,19 @@ public static class TriviaJSONParser {
     }
 
     public static void LoadFiles (string[] files) {
+        finishedLoading = false;
+        int totalFiles = files.Length;
+        int currentFile = 1;
         foreach (string file in files) {
+            loadProgress = (float)currentFile / totalFiles;
             LoadFile(file);
         }
+        finishedLoading = true;
     }
 
     public static void LoadAllFiles () {
         List<TriviaCategory> lst = JsonConvert.DeserializeObject<List<TriviaCategory>>(File.ReadAllText(Application.streamingAssetsPath+Path.DirectorySeparatorChar+"_triviaindex.json")); //TODO fail fast if file errors
-        string[] files = (from cat in lst select cat.file).ToArray();
+        string[] files = (from cat in lst select cat.file).ToArray(); //TODO prepend Application.streamingAssetsPath, currently puts just a file name
         LoadFiles(files);
     }
 }

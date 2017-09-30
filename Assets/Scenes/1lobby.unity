@@ -534,6 +534,39 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 755608063}
+--- !u!1 &819931227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 819931228}
+  m_Layer: 5
+  m_Name: CategoryList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &819931228
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 819931227}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1140193838}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 411.00006, y: -14.152}
+  m_SizeDelta: {x: 375, y: 1011.7}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &838998894
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +812,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1541030513186942, guid: f42f7787c2b57f84c8a10290f6f0f4fb, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f42f7787c2b57f84c8a10290f6f0f4fb, type: 2}
   m_IsPrefabParent: 0
@@ -951,6 +988,7 @@ RectTransform:
   - {fileID: 206879573}
   - {fileID: 2060692096}
   - {fileID: 1313664294}
+  - {fileID: 819931228}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1037,7 +1075,7 @@ GameObject:
   - component: {fileID: 1313664294}
   - component: {fileID: 1313664295}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Load Progress
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1382,6 +1420,9 @@ MonoBehaviour:
   playerNames: {fileID: 1469443982}
   startGameButton: {fileID: 2060692097}
   loadProgress: {fileID: 1313664295}
+  categorySelectContent: {fileID: 819931228}
+  categorySelectPrefab: {fileID: 1976378369568714, guid: 746df0fe2fa0dad4aa22441beb25d796,
+    type: 2}
 --- !u!1 &1665005671
 GameObject:
   m_ObjectHideFlags: 0
