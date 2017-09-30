@@ -10,6 +10,7 @@ const websock = require('./node_modules/ws');
 
 const struct = require('./boc_struct.js');
 const boc_handshake = require('./boc_handshake.js');
+const boc_trivia = require('./boc_trivia.js');
 
 console.log("Starting VoxelatedAvacado server.");
 
@@ -38,7 +39,7 @@ wss.on('connection',function connection(ws,conn) {
            return;
        }
        if (!ws.hasHandshook) boc_handshake(message,ws);
-       //TODO handle actual message
+       boc_trivia(msg,message,ws);
    };
 
    ws.onclose = function close() {
