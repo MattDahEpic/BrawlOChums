@@ -34,7 +34,10 @@ public static class TriviaJSONParser {
                 if (reader.TokenType == JsonToken.StartObject) {
                     try {
                         TriviaQuestion q = serializer.Deserialize<TriviaQuestion>(reader);
-                        //TODO make sure that all question parts exist
+                        //make sure that all question parts exist
+                        if (q.answers.Count != 4) {
+                            Debug.LogError("Error parsing trivia question "+q.question+" in "+file+"! Answers list does not contain 4 answers!");
+                        }
                         if (!q.answers.Contains(q.correct_answer)) {
                             Debug.LogError("Error parsing trivia question "+q.question+" in "+file+"! Answers list did not contain specified correct answer!");
                             continue;

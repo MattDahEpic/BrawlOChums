@@ -14,7 +14,9 @@
 	"answers": [
 		"London, England",
 		"Sydney, Australia",
-		""
+		"Washington D.C., United States",
+		"Berlin, Germany"
 	],
-	"currect_answer": "London, England"
-}]
+	"correct_answer": "London, England"
+},
+{}]
