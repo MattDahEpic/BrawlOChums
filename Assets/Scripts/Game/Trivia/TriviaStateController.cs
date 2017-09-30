@@ -17,6 +17,7 @@ public class TriviaStateController : IGameStateManager {
             selectedQuestions.Add(GameManager.trivia[Random.Range(0,GameManager.trivia.Count)]);
         }
         //send them to devices
+        Debug.Log("Sending questions to clients!");
         WebSocketManager.ws.Send("{" +
                                     "\"trivia\":\"loadquestions\"," +
                                     "\"questions\":{" +

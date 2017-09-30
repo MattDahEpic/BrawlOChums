@@ -8,8 +8,7 @@
 	],
 	"correct_answer": "Vanilla",
 	"author": "Brendo"
-},
-{
+}, {
 	"question": "Celebrity chef Gordon Ramsay opened his first restaurant in what city?",
 	"answers": [
 		"London, England",
@@ -18,5 +17,31 @@
 		"Berlin, Germany"
 	],
 	"correct_answer": "London, England"
-},
-{}]
+}, {
+	"question": "To be legally sold as bourbon, a whiskey's mash must contain at least 51% of what grain?",
+	"answers": [
+		"Corn",
+		"Wheat",
+		"Oat",
+		"Barley"
+	],
+	"correct_answer": "Corn"
+}, {
+	"question": "How many mother sauces are there in classical French cuisine?",
+	"answers": [
+		"7",
+		"4",
+		"12",
+		"5"
+	],
+	"correct_answer": "5"
+}, {
+	"question": "The original Starbucks was established in 1971 in what U.S. city?",
+	"answers": [
+		"Seattle, Washington",
+		"Orlando, Florida",
+		"Boulder, Colorado",
+		"Burbank, California"
+	],
+	"correct_answer": "Seattle, Washington"
+}]

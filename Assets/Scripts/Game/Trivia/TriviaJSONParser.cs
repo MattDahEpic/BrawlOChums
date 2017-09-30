@@ -63,8 +63,8 @@ public static class TriviaJSONParser {
         finishedLoading = true;
     }
 
-    public static void LoadAllFiles () {
-        List<TriviaCategory> lst = JsonConvert.DeserializeObject<List<TriviaCategory>>(File.ReadAllText(Application.streamingAssetsPath+Path.DirectorySeparatorChar+"_triviaindex.json")); //TODO fail fast if file errors
+    public static void LoadAllFiles (string basePath = null) {
+        List<TriviaCategory> lst = JsonConvert.DeserializeObject<List<TriviaCategory>>(File.ReadAllText((basePath ?? Application.streamingAssetsPath) +"/_triviaindex.json")); //TODO fail fast if file errors
         string[] files = (from cat in lst select cat.file).ToArray(); //TODO prepend Application.streamingAssetsPath, currently puts just a file name
         LoadFiles(files);
     }
