@@ -39,7 +39,7 @@ wss.on('connection',function connection(ws,conn) {
            return;
        }
        if (!ws.hasHandshook) boc_handshake(message,ws);
-       boc_trivia(msg,message,ws);
+       boc_trivia(msg.data,message,ws);
    };
 
    ws.onclose = function close() {
