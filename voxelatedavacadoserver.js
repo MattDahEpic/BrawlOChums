@@ -45,7 +45,7 @@ wss.on('connection',function connection(ws,conn) {
    ws.onclose = function close() {
        if (ws.clientType === "game") { //kill room with ws.gameCode, and all clients attached to it
            struct.connections.get(ws.gameCode).clients.forEach(function (client) {
-                client.close(4002);
+                if (client !== null) client.close(4002);
            });
            struct.connections.delete(ws.gameCode);
        } else { //mark client as gone, but leave the code in the list so if it returns it can take the same spot
