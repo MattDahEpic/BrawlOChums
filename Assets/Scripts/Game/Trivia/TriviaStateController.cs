@@ -1,13 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class TriviaStateController : IGameStateManager {
+    public VideoPlayer introVideo;
+    public Text question;
+    public Text answer1;
+    public Text answer2;
+    public Text answer3;
+    public Text answer4;
+    public Slider timeSlider;
+
+    private float timer;
+    private int currentQuestion;
+    private bool displayingResults;
     private List<TriviaJSONParser.TriviaQuestion> selectedQuestions = new List<TriviaJSONParser.TriviaQuestion>();
+    private Dictionary<string, Dictionary<int, bool>> questionAnsweredState = new Dictionary<string, Dictionary<int, bool>>();
+    private Dictionary<string, int> currentQuestionVotes = new Dictionary<string, int>();
+
     internal override void SetupHandlers () {
-        //TODO handle receiving of player guesses
+        onMessage = (sender, msg) => {
+            try {
+                Message_TriviaResponse resp = JsonConvert.DeserializeObject<Message_TriviaResponse>(msg.Data);
+                if (timer > 0) {
+                    //ensure player has not answered question already
+                    if (questionAnsweredState.ContainsKey(resp.indentifier)) {
+                        if (questionAnsweredState[resp.indentifier].ContainsKey(currentQuestion)) {
+                            if (questionAnsweredState[resp.indentifier][currentQuestion]) return;
+                        }
+                    } else {
+                        questionAnsweredState[resp.indentifier] = new Dictionary<int, bool>();
+                    }
+                    //and if they havent, count their vote
+                    questionAnsweredState[resp.indentifier][currentQuestion] = true;
+                    currentQuestionVotes[resp.selected]++;
+                    if (resp.selected == selectedQuestions[currentQuestion].correct_answer) { //award points for correct answer
+                        GameManager.players[resp.indentifier].score += Mathf.FloorToInt(1000 * (timer / GameManager.triviaQuestionTime));
+                    }
+                }
+            } catch { }
+        };
     }
 
     void Start () {
@@ -71,6 +108,42 @@ public class TriviaStateController : IGameStateManager {
     }
 	
 	void Update () {
-		//TODO send triggers to players when the question starts to display them, if all players answered advance automatically
+	    timer -= Time.deltaTime;
+	    timeSlider.value = timer / GameManager.triviaQuestionTime;
+	    if ((ulong) introVideo.frame == introVideo.frameCount) {
+            introVideo.gameObject.SetActive(false);
+            SetupQuestion(0);
+	    }
+	    if (timer <= 0) { //TODO if all connected players have answered the question advance anyways
+	        if (displayingResults) {
+	            if (currentQuestion + 1 >= 5) { //if final question, advance to scoreboard
+	                sceneLoad.allowSceneActivation = true;
+	                return;
+	            }
+	            SetupQuestion(currentQuestion++);
+	        } else {
+	            //TODO display results
+                WebSocketManager.ws.Send("{\"trivia\":\"hidequestion\"}"); //during results hide the question if the player hasn't answered it
+	            displayingResults = true;
+	            timer = 5f;
+	        }
+	    }
 	}
+
+    private void SetupQuestion (int questionIndex) {
+        TriviaJSONParser.TriviaQuestion q = selectedQuestions[questionIndex];
+        currentQuestion = questionIndex;
+        currentQuestionVotes.Clear();
+        displayingResults = false;
+        //push details to screen
+        question.text = q.question;
+        //TODO shuffle answers
+        answer1.text = q.answers[0];
+        answer2.text = q.answers[1];
+        answer3.text = q.answers[2];
+        answer4.text = q.answers[3];
+        //let client know and start timer
+        WebSocketManager.ws.Send("{\"trivia\":\"displayquestion\",\"display\":\""+(questionIndex+1)+"\"}");
+        timer = GameManager.triviaQuestionTime;
+    }
 }

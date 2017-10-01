@@ -9,6 +9,8 @@ public static class GameManager {
     public static Dictionary<string, PlayerStats> players;
     public static List<TriviaJSONParser.TriviaQuestion> trivia;
 
+    public static float triviaQuestionTime = 30f;
+
     public class PlayerStats {
         public string name;
         public int score;

@@ -7,7 +7,7 @@ public class CategorySelectRenderer : MonoBehaviour {
     public TriviaJSONParser.TriviaCategory category;
     [HideInInspector] public bool selected = true;
 
-    public Text name;
+    public new Text name;
     public Image bg;
 	void Update () {
 	    name.text = (selected ? "■ " : "□ ") +category.name;

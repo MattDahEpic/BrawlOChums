@@ -45,7 +45,7 @@ public static class WebSocketManager {
             yield return connectivityTest;
             if (connectivityTest.error != null) SetConnectionFail();*/
             UnityEngine.Debug.Log("Opening connection...");
-            _ws = new WebSocket("ws://localhost:36245");
+            _ws = new WebSocket(StaticBuildData.wsServAddress);
             _ws.OnOpen += (sender, e) => {
                 _ws.Send("{\"type\":\"game\"}");
             };
