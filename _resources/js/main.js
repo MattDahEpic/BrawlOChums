@@ -88,10 +88,10 @@ function DoJoinGame () { //TODO spinny animation to show work
                     break;
             }
             currentAnswers = answers;
-            document.getElementById('trivia-question1').innerText = answers[0];
-            document.getElementById('trivia-question2').innerText = answers[1];
-            document.getElementById('trivia-question3').innerText = answers[2];
-            document.getElementById('trivia-question4').innerText = answers[3];
+            document.getElementById('trivia-answer1').innerText = answers[0];
+            document.getElementById('trivia-answer2').innerText = answers[1];
+            document.getElementById('trivia-answer3').innerText = answers[2];
+            document.getElementById('trivia-answer4').innerText = answers[3];
         }
         //handle forced hiding of trivia question
         if (message.trivia === "hidequestion") {
