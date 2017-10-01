@@ -14,6 +14,7 @@ public class TriviaStateController : IGameStateManager {
     public Text answer2;
     public Text answer3;
     public Text answer4;
+    public Text roundProgress;
     public Slider timeSlider;
 
     private float timer;
@@ -49,6 +50,7 @@ public class TriviaStateController : IGameStateManager {
 
     void Start () {
         sceneLoad = SceneManager.LoadSceneAsync("4precomscoreboard");
+        sceneLoad.allowSceneActivation = false;
         //decide questions
         for (int i = 0; i < 5; i++) {
             selectedQuestions.Add(GameManager.trivia[Random.Range(0,GameManager.trivia.Count)]);
@@ -109,10 +111,14 @@ public class TriviaStateController : IGameStateManager {
 	
 	void Update () {
 	    timer -= Time.deltaTime;
+        roundProgress.text = (currentQuestion+1)+"/5";
 	    timeSlider.value = timer / GameManager.triviaQuestionTime;
-	    if ((ulong) introVideo.frame == introVideo.frameCount) {
-            introVideo.gameObject.SetActive(false);
-            SetupQuestion(0);
+	    if (introVideo.gameObject.activeInHierarchy) {
+	        if ((ulong) introVideo.frame == introVideo.frameCount) {
+	            introVideo.gameObject.SetActive(false);
+	            SetupQuestion(0);
+	        }
+	        return;
 	    }
 	    if (timer <= 0) { //TODO if all connected players have answered the question advance anyways
 	        if (displayingResults) {
@@ -120,8 +126,10 @@ public class TriviaStateController : IGameStateManager {
 	                sceneLoad.allowSceneActivation = true;
 	                return;
 	            }
-	            SetupQuestion(currentQuestion++);
+	            timeSlider.gameObject.SetActive(true);
+                SetupQuestion(currentQuestion+1);
 	        } else {
+                timeSlider.gameObject.SetActive(false);
 	            //TODO display results
                 WebSocketManager.ws.Send("{\"trivia\":\"hidequestion\"}"); //during results hide the question if the player hasn't answered it
 	            displayingResults = true;
@@ -137,7 +145,7 @@ public class TriviaStateController : IGameStateManager {
         displayingResults = false;
         //push details to screen
         question.text = q.question;
-        //TODO shuffle answers
+        q.answers.Shuffle();
         answer1.text = q.answers[0];
         answer2.text = q.answers[1];
         answer3.text = q.answers[2];
