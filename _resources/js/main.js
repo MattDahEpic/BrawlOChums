@@ -93,6 +93,11 @@ function DoJoinGame () { //TODO spinny animation to show work
             document.getElementById('trivia-question3').innerText = answers[2];
             document.getElementById('trivia-question4').innerText = answers[3];
         }
+        //handle forced hiding of trivia question
+        if (message.trivia === "hidequestion") {
+            document.getElementById('other-logo').style.display = "initial";
+            document.getElementById('trivia').style.display = "none";
+        }
     };
     ws.onclose = function (evt) {
         console.log("Connection lost! ("+evt.code+")");
