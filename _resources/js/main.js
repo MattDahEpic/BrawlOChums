@@ -38,7 +38,7 @@ function DoJoinGame () { //TODO spinny animation to show work
         return;
     }
     document.cookie = "boc-playername="+playerName+"; expires=33071673599000; path=/"; //set the player name to a cookie for later retrieval
-    ws = new WebSocket("ws://localhost:36245");
+    ws = new WebSocket("ws://144.217.245.39:36245");
     ws.onopen = function (event) {
         console.log("Connection Established!");
         //send type, code, name, and identifier (if we have one) to the server
