@@ -66,7 +66,7 @@ public class LobbyStateController : IGameStateManager {
         connectScreen.SetActive(false);
         lobbyScreen.SetActive(true);
 	    gameCode.text = GameManager.gameCode;
-	    qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.live#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
+        if (qrCode.texture == null) qrCode.texture = new UnityQRCode(new QRCodeGenerator().CreateQrCode("https://brawlochums.gq#" + GameManager.gameCode, QRCodeGenerator.ECCLevel.H)).GetGraphic(60);
 	    playerNames.text = "";
 	    foreach (GameManager.PlayerStats p in GameManager.players.Values) { //populate player name list
 	        playerNames.text += p.name + "\n";
