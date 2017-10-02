@@ -1,0 +1,64 @@
+[{
+	"question": "What was the first African colony to gain its independence?",
+	"answers": [
+		"Libya",
+		"Egypt",
+		"South Africa",
+		"Liberia"
+	],
+	"correct_answer": "Liberia"
+}, {
+	"question": "Formally known as Ceylon, this independent island nation changed its name in 1972?",
+	"answers": [
+		"Cyprus",
+		"Sri Lanka",
+		"Madagascar",
+		"Palau"
+	],
+	"correct_answer": "Sri Lanka"
+},{
+	"question": "In 1850, what percent of the population of California was women?",
+	"answers": [
+		"8%",
+		"13%",
+		"4%",
+		"17%"
+	],
+	"correct_answer": "8%"
+},{
+	"question": "Which continent has the highest percentage of what is considered wilderness at 38%?",
+	"answers": [
+		"North America",
+		"Asia",
+		"Africa",
+		"South America"
+	],
+	"correct_answer": "North America"
+},{
+	"question": "Believe it or not Antarctica has an area code for telephones, what is it?",
+	"answers": [
+		"672",
+		"901",
+		"747",
+		"999"
+	],
+	"correct_answer": "672"
+},{
+	"question": "Which of the continental US states has the longest coastline?",
+	"answers": [
+		"California",
+		"Florida",
+		"Michigan",
+		"Texas"
+	],
+	"correct_answer": "Michigan"
+},{
+	"question": "What is the highest recorded temperature Antarctica has ever had, in Farenheit?",
+	"answers": [
+		"-1 degrees",
+		"7 degrees",
+		"3 degrees",
+		"10 degrees"
+	],
+	"correct_answer": "3 degrees"
+}]

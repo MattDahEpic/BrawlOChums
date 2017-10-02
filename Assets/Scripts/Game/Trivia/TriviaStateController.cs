@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -130,10 +131,19 @@ public class TriviaStateController : IGameStateManager {
                 SetupQuestion(currentQuestion+1);
 	        } else {
                 timeSlider.gameObject.SetActive(false);
-	            //TODO display results
+	            //display results TODO vote percentages
+	            int votes = currentQuestionVotes.Values.Sum();
+	            answer1.color = answer1.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            //answer1.text += "\n" + (currentQuestionVotes.ContainsKey(answer1.text) ? Mathf.FloorToInt((currentQuestionVotes[answer1.text] / votes)*100) : 0) + "%";
+	            answer2.color = answer2.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            //answer2.text += "\n" + (currentQuestionVotes.ContainsKey(answer2.text) ? Mathf.FloorToInt((currentQuestionVotes[answer2.text] / votes) * 100) : 0) + "%";
+                answer3.color = answer3.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            //answer3.text += "\n" + (currentQuestionVotes.ContainsKey(answer3.text) ? Mathf.FloorToInt((currentQuestionVotes[answer3.text] / votes) * 100) : 0) + "%";
+                answer4.color = answer4.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            //answer4.text += "\n" + (currentQuestionVotes.ContainsKey(answer4.text) ? Mathf.FloorToInt((currentQuestionVotes[answer4.text] / votes) * 100) : 0) + "%";
                 WebSocketManager.ws.Send("{\"trivia\":\"hidequestion\"}"); //during results hide the question if the player hasn't answered it
 	            displayingResults = true;
-	            timer = 5f;
+	            timer = 3f;
 	        }
 	    }
 	}
@@ -146,9 +156,13 @@ public class TriviaStateController : IGameStateManager {
         //push details to screen
         question.text = q.question;
         q.answers.Shuffle();
+        answer1.color = Color.white;
         answer1.text = q.answers[0];
+        answer2.color = Color.white;
         answer2.text = q.answers[1];
+        answer3.color = Color.white;
         answer3.text = q.answers[2];
+        answer4.color = Color.white;
         answer4.text = q.answers[3];
         //let client know and start timer
         WebSocketManager.ws.Send("{\"trivia\":\"displayquestion\",\"display\":\""+(questionIndex+1)+"\"}");

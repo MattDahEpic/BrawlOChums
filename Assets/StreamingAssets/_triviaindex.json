@@ -1,12 +1,17 @@
-[
-	{
-		"name": "Food",
-		"description": "Trivia telling of tasty treats.",
-		"file": "food.json"
-	},
-	{
-		"name": "TV & Film",
-		"description": "How well do you know your favorite binge material?",
-		"file": "filmtv.json"
-	}
-]
+[{
+	"name": "Food",
+	"description": "Trivia telling of tasty treats.",
+	"file": "food.json"
+}, {
+	"name": "TV & Film",
+	"description": "How well do you know your favorite binge material?",
+	"file": "filmtv.json"
+}, {
+	"name": "Computers & The Internet",
+	"description": "I'm sure you know these.. Or do you?",
+	"file": "computersinternet.json"
+}, {
+	"name": "Geography",
+	"description": "Your least favorite class in school.",
+	"file": "geography.json"
+}]
