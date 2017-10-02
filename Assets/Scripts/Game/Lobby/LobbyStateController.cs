@@ -34,7 +34,7 @@ public class LobbyStateController : IGameStateManager {
     }
 
 
-    void /*IEnumerator*/ Start () {
+    void Start () {
 	    connectScreen.SetActive(true);
 	    lobbyScreen.SetActive(false);
         playerNames.text = "";
