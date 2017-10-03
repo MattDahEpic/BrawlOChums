@@ -1,4 +1,4 @@
-const HashMap = require('./node_modules/hashmap');
+const HashMap = require('hashmap');
 
 var connections = new HashMap();
 module.exports.connections = connections;

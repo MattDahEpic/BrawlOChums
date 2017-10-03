@@ -6,15 +6,20 @@ Error Codes:
 4003: client attempted to connect without a name or the name provided was invalid
  */
 
-const websock = require('./node_modules/ws');
+const websock = require('ws');
+const fs = require('fs');
 
 const struct = require('./boc_struct.js');
 const boc_handshake = require('./boc_handshake.js');
 const boc_trivia = require('./boc_trivia.js');
 
 console.log("Starting VoxelatedAvacado server.");
-
-const wss = new websock.Server({ port: 36245 });
+const server = require('https').createServer({
+    cert: fs.readFileSync('/etc/letsencrypt/live/brawlochums.gq/cert.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/brawlochums.gq/privkey.pem'),
+    port: 36245
+});
+const wss = new websock.Server({ server: server, path: "/ws/"});
 
 process.on('SIGINT',function () {
     console.log("Received SIGINT, stopping gracefully...");
@@ -23,6 +28,10 @@ process.on('SIGINT',function () {
         ws.close(1001);
     });
     process.exit(1);
+});
+
+process.on('uncaughtException', function (exception) { //TODO remove before prod
+    console.log(exception); // to see your exception details in the console
 });
 
 wss.on('connection',function connection(ws,conn) {
@@ -55,3 +64,5 @@ wss.on('connection',function connection(ws,conn) {
        }
    }
 });
+
+server.listen(36245);

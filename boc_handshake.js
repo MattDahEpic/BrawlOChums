@@ -1,5 +1,5 @@
 const s = require('./boc_struct.js');
-const randomstring = require('./node_modules/randomstring');
+const randomstring = require('randomstring');
 
 module.exports = function (message, ws) {
     ws.hasHandshook = true;
