@@ -51,7 +51,7 @@ public static class WebSocketManager {
             };
             _ws.OnMessage += getGameCodeHandler;
             _ws.OnMessage += playerJoinHandler;
-
+            _ws.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls11;
             _ws.Connect();
         }
     }

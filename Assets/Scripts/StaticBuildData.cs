@@ -7,8 +7,8 @@ public static class StaticBuildData {
     public static bool debug_DetailedTriviaLoading = false;
     public const string wsServAddress = 
 #if UNITY_EDITOR
-    "ws://144.217.245.39:36245";
+    "wss://dev.brawlochums.gq/ws";
 #else
-    "ws://test.brawlochums.octolopagon.games:36245";
+    "wss://brawlochums.gq/ws";
 #endif
 }
