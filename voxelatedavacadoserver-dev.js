@@ -14,9 +14,7 @@ const boc_handshake = require('./boc_handshake.js');
 const boc_trivia = require('./boc_trivia.js');
 
 console.log("Starting VoxelatedAvacado server.");
-const server = require('https').createServer({
-    cert: fs.readFileSync('/etc/letsencrypt/live/brawlochums.gq/cert.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/brawlochums.gq/privkey.pem'),
+const server = require('http').createServer({
     port: 36245
 });
 const wss = new websock.Server({ server: server, path: "/ws/"});
