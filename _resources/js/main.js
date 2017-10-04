@@ -26,7 +26,7 @@ let questions;
 let currentAnswers;
 
 function DoJoinGame () { //TODO spinny animation to show work
-    document.getElementById('base-submit').isDisabled = true;
+    document.getElementById('base-submit').disabled = true;
     gameCode = document.getElementById('base-gameCode').value.toUpperCase();
     if (gameCode === "") {
         document.getElementById('error-nogamecode').style.display = "initial";
@@ -38,7 +38,7 @@ function DoJoinGame () { //TODO spinny animation to show work
         return;
     }
     document.cookie = "boc-playername="+playerName+"; expires=33071673599000; path=/"; //set the player name to a cookie for later retrieval
-    ws = new WebSocket("wss://dev.brawlochums.gq/ws/");
+    ws = new WebSocket("ws://dev.brawlochums.gq/ws/");
     ws.onopen = function (event) {
         console.log("Connection Established!");
         //send type, code, name, and identifier (if we have one) to the server
