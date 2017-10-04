@@ -1,6 +1,6 @@
 ﻿using WebSocketSharp;
 using System;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 public static class WebSocketManager {
@@ -47,11 +47,11 @@ public static class WebSocketManager {
             UnityEngine.Debug.Log("Opening connection...");
             _ws = new WebSocket(StaticBuildData.wsServAddress);
             _ws.OnOpen += (sender, e) => {
+                UnityEngine.Debug.Log("Connection opened!");
                 _ws.Send("{\"type\":\"game\"}");
             };
             _ws.OnMessage += getGameCodeHandler;
             _ws.OnMessage += playerJoinHandler;
-            _ws.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls11;
             _ws.Connect();
         }
     }
