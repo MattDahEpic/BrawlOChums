@@ -56,58 +56,6 @@ public class TriviaStateController : IGameStateManager {
         for (int i = 0; i < 5; i++) {
             selectedQuestions.Add(GameManager.trivia[Random.Range(0,GameManager.trivia.Count)]);
         }
-        //send them to devices
-        Debug.Log("Sending questions to clients!");
-        WebSocketManager.ws.Send("{" +
-                                    "\"trivia\":\"loadquestions\"," +
-                                    "\"questions\":{" +
-                                        "\"question1\":{" +
-                                            "\"question\":\""+selectedQuestions[0].question+"\"," +
-                                            "\"answers\":[" +
-                                                "\""+selectedQuestions[0].answers[0]+"\"," +
-                                                "\""+selectedQuestions[0].answers[1]+"\"," +
-                                                "\""+selectedQuestions[0].answers[2]+"\"," +
-                                                "\""+selectedQuestions[0].answers[3]+"\"" +
-                                            "]" +
-                                        "}," +
-                                        "\"question2\":{" +
-                                            "\"question\":\""+selectedQuestions[1].question+"\"," +
-                                            "\"answers\":[" +
-                                                "\""+selectedQuestions[1].answers[0]+"\"," +
-                                                "\""+selectedQuestions[1].answers[1]+"\"," +
-                                                "\""+selectedQuestions[1].answers[2]+"\"," +
-                                                "\""+selectedQuestions[1].answers[3]+"\"" +
-                                            "]" +
-                                        "}," +
-                                        "\"question3\":{" +
-                                            "\"question\":\""+selectedQuestions[2].question+"\"," +
-                                            "\"answers\":[" +
-                                                "\""+selectedQuestions[2].answers[0]+"\"," +
-                                                "\""+selectedQuestions[2].answers[1]+"\"," +
-                                                "\""+selectedQuestions[2].answers[2]+"\"," +
-                                                "\""+selectedQuestions[2].answers[3]+"\"" +
-                                            "]" +
-                                        "}," +
-                                        "\"question4\": {" +
-                                            "\"question\":\""+selectedQuestions[3].question+"\"," +
-                                            "\"answers\":[" +
-                                                "\""+selectedQuestions[3].answers[0]+"\"," +
-                                                "\""+selectedQuestions[3].answers[1]+"\"," +
-                                                "\""+selectedQuestions[3].answers[2]+"\"," +
-                                                "\""+selectedQuestions[3].answers[3]+"\"" +
-                                            "]" +
-                                        "}," +
-                                        "\"question5\":{" +
-                                            "\"question\":\""+selectedQuestions[4].question+"\"," +
-                                            "\"answers\":[" +
-                                                "\""+selectedQuestions[4].answers[0]+"\"," +
-                                                "\""+selectedQuestions[4].answers[1]+"\"," +
-                                                "\""+selectedQuestions[4].answers[2]+"\"," +
-                                                "\""+selectedQuestions[4].answers[3]+"\"" +
-                                            "]" +
-                                        "}" +
-                                    "}" +
-                                 "}");
     }
 	
 	void Update () {
@@ -165,7 +113,18 @@ public class TriviaStateController : IGameStateManager {
         answer4.color = Color.white;
         answer4.text = q.answers[3];
         //let client know and start timer
-        WebSocketManager.ws.Send("{\"trivia\":\"displayquestion\",\"display\":\""+(questionIndex+1)+"\"}");
+        WebSocketManager.ws.Send("{" +
+                                    "\"trivia\":\"displayquestion\"," +
+                                    "\"question\":{" +
+                                        "\"question\":\"" + selectedQuestions[currentQuestion].question + "\"," +
+                                        "\"answers\":[" +
+                                            "\"" + selectedQuestions[currentQuestion].answers[0] + "\"," +
+                                            "\"" + selectedQuestions[currentQuestion].answers[1] + "\"," +
+                                            "\"" + selectedQuestions[currentQuestion].answers[2] + "\"," +
+                                            "\"" + selectedQuestions[currentQuestion].answers[3] + "\"" +
+                                        "]" +
+                                    "}" +
+                                 "}");
         timer = GameManager.triviaQuestionTime;
     }
 }

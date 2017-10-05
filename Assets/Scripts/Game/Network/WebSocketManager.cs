@@ -44,7 +44,7 @@ public static class WebSocketManager {
             /* TODO WWW connectivityTest = new WWW("https://google.com");
             yield return connectivityTest;
             if (connectivityTest.error != null) SetConnectionFail();*/
-            UnityEngine.Debug.Log("Opening connection...");
+            UnityEngine.Debug.Log("Opening connection to "+StaticBuildData.wsServAddress);
             _ws = new WebSocket(StaticBuildData.wsServAddress);
             _ws.OnOpen += (sender, e) => {
                 UnityEngine.Debug.Log("Connection opened!");
