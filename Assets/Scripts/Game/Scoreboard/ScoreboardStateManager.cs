@@ -11,9 +11,10 @@ public class ScoreboardStateManager : IGameStateManager {
 	void Start () {
 	    scoreboard.text = "Place".PadRight(7)+"Name".PadRight(25)+"Score".PadRight(9)+"\n";
 	    int place = 1;
-	    foreach (var kvp in GameManager.players.OrderByDescending(pair => pair.Value.score).Take(25)) {
+	    foreach (var kvp in GameManager.players.OrderByDescending(pair => pair.Value.score)) {
 	        scoreboard.text += place.ToString().PadRight(7) + kvp.Value.name.PadRight(25) + kvp.Value.score.ToString().PadRight(9) + "\n";
-            //TODO send scores to devices
+            WebSocketManager.ws.Send("{\"scoreboard\":\""+kvp.Key+"\",\"score\":\""+kvp.Value.score+"\",\"place\":\""+place+"\"}");
+	        place++;
 	    }
 	}
 	

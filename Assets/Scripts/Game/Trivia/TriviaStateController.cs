@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -31,18 +29,20 @@ public class TriviaStateController : IGameStateManager {
                 Message_TriviaResponse resp = JsonConvert.DeserializeObject<Message_TriviaResponse>(msg.Data);
                 if (timer > 0) {
                     //ensure player has not answered question already
-                    if (questionAnsweredState.ContainsKey(resp.indentifier)) {
-                        if (questionAnsweredState[resp.indentifier].ContainsKey(currentQuestion)) {
-                            if (questionAnsweredState[resp.indentifier][currentQuestion]) return;
+                    if (questionAnsweredState.ContainsKey(resp.identifier)) {
+                        if (questionAnsweredState[resp.identifier].ContainsKey(currentQuestion)) {
+                            if (questionAnsweredState[resp.identifier][currentQuestion]) return;
                         }
                     } else {
-                        questionAnsweredState[resp.indentifier] = new Dictionary<int, bool>();
+                        questionAnsweredState[resp.identifier] = new Dictionary<int, bool>();
                     }
                     //and if they havent, count their vote
-                    questionAnsweredState[resp.indentifier][currentQuestion] = true;
-                    currentQuestionVotes[resp.selected]++;
-                    if (resp.selected == selectedQuestions[currentQuestion].correct_answer) { //award points for correct answer
-                        GameManager.players[resp.indentifier].score += Mathf.FloorToInt(1000 * (timer / GameManager.triviaQuestionTime));
+                    questionAnsweredState[resp.identifier][currentQuestion] = true;
+                    //Debug.Log("Player "+GameManager.players[resp.identifier].name +" selected answer "+resp.selected);
+                    if (!currentQuestionVotes.ContainsKey(resp.selected.ToUpperInvariant())) currentQuestionVotes[resp.selected.ToUpperInvariant()] = 0;
+                    currentQuestionVotes[resp.selected.ToUpperInvariant()]++;
+                    if (resp.selected.ToUpperInvariant().Equals(selectedQuestions[currentQuestion].correct_answer.ToUpperInvariant())) { //award points for correct answer
+                        GameManager.players[resp.identifier].score += Mathf.FloorToInt(1000 * (timer / GameManager.triviaQuestionTime));
                     }
                 }
             } catch { }
@@ -69,7 +69,7 @@ public class TriviaStateController : IGameStateManager {
 	        }
 	        return;
 	    }
-	    if (timer <= 0) { //TODO if all connected players have answered the question advance anyways
+	    if (timer <= 0 || (!displayingResults && currentQuestionVotes.Values.Sum() == GameManager.players.Count)) {
 	        if (displayingResults) {
 	            if (currentQuestion + 1 >= 5) { //if final question, advance to scoreboard
 	                sceneLoad.allowSceneActivation = true;
@@ -78,20 +78,20 @@ public class TriviaStateController : IGameStateManager {
 	            timeSlider.gameObject.SetActive(true);
                 SetupQuestion(currentQuestion+1);
 	        } else {
-                timeSlider.gameObject.SetActive(false);
-	            //display results TODO vote percentages
-	            int votes = currentQuestionVotes.Values.Sum();
-	            answer1.color = answer1.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            //answer1.text += "\n" + (currentQuestionVotes.ContainsKey(answer1.text) ? Mathf.FloorToInt((currentQuestionVotes[answer1.text] / votes)*100) : 0) + "%";
-	            answer2.color = answer2.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            //answer2.text += "\n" + (currentQuestionVotes.ContainsKey(answer2.text) ? Mathf.FloorToInt((currentQuestionVotes[answer2.text] / votes) * 100) : 0) + "%";
-                answer3.color = answer3.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            //answer3.text += "\n" + (currentQuestionVotes.ContainsKey(answer3.text) ? Mathf.FloorToInt((currentQuestionVotes[answer3.text] / votes) * 100) : 0) + "%";
-                answer4.color = answer4.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            //answer4.text += "\n" + (currentQuestionVotes.ContainsKey(answer4.text) ? Mathf.FloorToInt((currentQuestionVotes[answer4.text] / votes) * 100) : 0) + "%";
-                WebSocketManager.ws.Send("{\"trivia\":\"hidequestion\"}"); //during results hide the question if the player hasn't answered it
 	            displayingResults = true;
 	            timer = 3f;
+                timeSlider.gameObject.SetActive(false);
+	            //display results
+	            int votes = currentQuestionVotes.Values.Sum();
+	            answer1.color = answer1.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            answer1.text += "\n" + (currentQuestionVotes.ContainsKey(answer1.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer1.text.ToUpperInvariant()] / votes)*100) : 0) + "%";
+	            answer2.color = answer2.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            answer2.text += "\n" + (currentQuestionVotes.ContainsKey(answer2.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer2.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
+                answer3.color = answer3.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            answer3.text += "\n" + (currentQuestionVotes.ContainsKey(answer3.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer3.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
+                answer4.color = answer4.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
+	            answer4.text += "\n" + (currentQuestionVotes.ContainsKey(answer4.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer4.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
+                WebSocketManager.ws.Send("{\"trivia\":\"hidequestion\"}"); //during results hide the question if the player hasn't answered it
 	        }
 	    }
 	}
