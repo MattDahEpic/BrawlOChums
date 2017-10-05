@@ -14,10 +14,7 @@ const boc_handshake = require('./boc_handshake.js');
 const boc_trivia = require('./boc_trivia.js');
 
 console.log("Starting VoxelatedAvacado server.");
-const server = require('http').createServer({
-    port: 36245
-});
-const wss = new websock.Server({ server: server, path: "/ws/"});
+const wss = new websock.Server({ port: 36245, path: "/ws/"});
 
 process.on('SIGINT',function () {
     console.log("Received SIGINT, stopping gracefully...");
@@ -26,10 +23,6 @@ process.on('SIGINT',function () {
         ws.close(1001);
     });
     process.exit(1);
-});
-
-process.on('uncaughtException', function (exception) { //TODO remove before prod
-    console.log(exception); // to see your exception details in the console
 });
 
 wss.on('connection',function connection(ws,conn) {
@@ -62,5 +55,3 @@ wss.on('connection',function connection(ws,conn) {
        }
    }
 });
-
-server.listen(36245);
