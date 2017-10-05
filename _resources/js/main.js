@@ -56,37 +56,12 @@ function DoJoinGame () { //TODO spinny animation to show work
             document.getElementById('other-logo').style.display = "initial";
             return;
         }
-        //handle receiving questions
-        if (message.trivia === "loadquestions") {
-            questions = message.questions;
-        }
-        //handle displaying current question
+        //handle displaying question
         if (message.trivia === "displayquestion") {
             document.getElementById('other-logo').style.display = "none";
             document.getElementById('trivia').style.display = "initial";
-            let answers;
-            switch (message.display) {
-                case "1":
-                    document.getElementById('trivia-question').innerText = questions.question1.question;
-                    answers = shuffleArray(questions.question1.answers);
-                    break;
-                case "2":
-                    document.getElementById('trivia-question').innerText = questions.question2.question;
-                    answers = shuffleArray(questions.question2.answers);
-                    break;
-                case "3":
-                    document.getElementById('trivia-question').innerText = questions.question3.question;
-                    answers = shuffleArray(questions.question3.answers);
-                    break;
-                case "4":
-                    document.getElementById('trivia-question').innerText = questions.question4.question;
-                    answers = shuffleArray(questions.question4.answers);
-                    break;
-                case "5":
-                    document.getElementById('trivia-question').innerText = questions.question5.question;
-                    answers = shuffleArray(questions.question5.answers);
-                    break;
-            }
+            document.getElementById('trivia-question').innerText = message.question.question;
+            let answers = shuffleArray(message.question.answers);
             currentAnswers = answers;
             document.getElementById('trivia-answer1').innerText = answers[0];
             document.getElementById('trivia-answer2').innerText = answers[1];
