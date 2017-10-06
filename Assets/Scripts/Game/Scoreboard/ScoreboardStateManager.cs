@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class ScoreboardStateManager : IGameStateManager {
     public Text scoreboard;
+
     internal override void SetupHandlers () {}
+
+    private float timer = 10f;
 
 	void Start () {
 	    scoreboard.text = "Place".PadRight(7)+"Name".PadRight(25)+"Score".PadRight(9)+"\n";
@@ -16,10 +19,14 @@ public class ScoreboardStateManager : IGameStateManager {
             WebSocketManager.ws.Send("{\"scoreboard\":\""+kvp.Key+"\",\"score\":\""+kvp.Value.score+"\",\"place\":\""+place+"\"}");
 	        place++;
 	    }
+        //TODO decide a set of commercials to play and load the first one
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
-		
+	    timer -= Time.deltaTime;
+	    if (timer <= 0) {
+	        //TODO engage loading of first commercial
+            Application.Quit();
+	    }
 	}
 }
