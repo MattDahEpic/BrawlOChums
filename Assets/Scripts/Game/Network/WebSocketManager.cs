@@ -52,7 +52,7 @@ public static class WebSocketManager {
             };
             _ws.OnMessage += getGameCodeHandler;
             _ws.OnMessage += playerJoinHandler;
-            _ws.Connect();
+            _ws.ConnectAsync();
         }
     }
 

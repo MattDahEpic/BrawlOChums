@@ -520,7 +520,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
   apiCompatibilityLevelPerPlatform:
-    Standalone: 3
+    Standalone: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: Project Voxelated Avacado
@@ -605,7 +605,7 @@ PlayerSettings:
     Build: 1
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 2
   cloudProjectId: 5d8b9cd5-dee3-40c6-852e-9b99390b796d
   projectName: Brawl o' Chums
   organizationId: octolopagon-games

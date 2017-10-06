@@ -12,7 +12,7 @@ public class MainMenuManagement : MonoBehaviour {
     }
 
     public void DoPlay() {
-        SceneManager.LoadScene("game_lobby");
+        SceneManager.LoadScene("1lobby");
     }
 
     public void DoOptions() {

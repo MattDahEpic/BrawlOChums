@@ -84,13 +84,13 @@ public class TriviaStateController : IGameStateManager {
 	            //display results
 	            int votes = currentQuestionVotes.Values.Sum();
 	            answer1.color = answer1.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            answer1.text += "\n" + (currentQuestionVotes.ContainsKey(answer1.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer1.text.ToUpperInvariant()] / votes)*100) : 0) + "%";
+	            answer1.text += "\n" + (currentQuestionVotes.ContainsKey(answer1.text.ToUpperInvariant()) ? Mathf.FloorToInt(((float)currentQuestionVotes[answer1.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
 	            answer2.color = answer2.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            answer2.text += "\n" + (currentQuestionVotes.ContainsKey(answer2.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer2.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
+	            answer2.text += "\n" + (currentQuestionVotes.ContainsKey(answer2.text.ToUpperInvariant()) ? Mathf.FloorToInt(((float)currentQuestionVotes[answer2.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
                 answer3.color = answer3.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            answer3.text += "\n" + (currentQuestionVotes.ContainsKey(answer3.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer3.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
+	            answer3.text += "\n" + (currentQuestionVotes.ContainsKey(answer3.text.ToUpperInvariant()) ? Mathf.FloorToInt(((float)currentQuestionVotes[answer3.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
                 answer4.color = answer4.text == selectedQuestions[currentQuestion].correct_answer ? Color.green : Color.red;
-	            answer4.text += "\n" + (currentQuestionVotes.ContainsKey(answer4.text.ToUpperInvariant()) ? Mathf.FloorToInt((currentQuestionVotes[answer4.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
+	            answer4.text += "\n" + (currentQuestionVotes.ContainsKey(answer4.text.ToUpperInvariant()) ? Mathf.FloorToInt(((float)currentQuestionVotes[answer4.text.ToUpperInvariant()] / votes) * 100) : 0) + "%";
                 WebSocketManager.ws.Send("{\"trivia\":\"hidequestion\"}"); //during results hide the question if the player hasn't answered it
 	        }
 	    }
